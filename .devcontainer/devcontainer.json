@@ -1,0 +1,37 @@
+
+{
+	"name": "Hydra Neural Node (Ollama)",
+	"image": "mcr.microsoft.com/devcontainers/base:ubuntu-22.04",
+	"features": {
+		"ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
+	},
+	"forwardPorts": [11434, 3000, 3001],
+	"portsAttributes": {
+		"11434": {
+			"label": "Ollama API",
+			"visibility": "public",
+			"onAutoForward": "notify"
+		},
+		"3000": {
+			"label": "Hydra Frontend",
+			"visibility": "public"
+		}
+	},
+	"containerEnv": {
+		"OLLAMA_HOST": "0.0.0.0",
+		"OLLAMA_ORIGINS": "*"
+	},
+	"updateContentCommand": "curl -fsSL https://ollama.com/install.sh | sh",
+	"postStartCommand": "nohup bash -c 'ollama serve & sleep 5 && ollama pull llama3' > /tmp/ollama.log 2>&1 &",
+	"customizations": {
+		"vscode": {
+			"settings": {
+				"terminal.integrated.defaultProfile.linux": "bash"
+			},
+			"extensions": [
+				"esbenp.prettier-vscode",
+				"dbaeumer.vscode-eslint"
+			]
+		}
+	}
+}
